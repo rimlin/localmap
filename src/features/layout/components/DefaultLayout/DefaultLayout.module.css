@@ -1,0 +1,5 @@
+.root {
+  background-color: hsl(230, 30%, 25%);
+  display: grid;
+  grid-template-columns: 200px 1fr;
+}
