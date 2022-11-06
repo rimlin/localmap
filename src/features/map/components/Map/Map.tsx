@@ -101,14 +101,10 @@ const Map: React.FC = (props) => {
   return (
     <div
       className={classNames({
-        [styles.insertMarker]: mapState === 'insertMarker',
+        [styles.insertMarker as string]: mapState === 'insertMarker',
       })}
     >
-      <MapContainer
-        className={classNames(styles.map)}
-        center={defaultCenter}
-        zoom={10}
-      >
+      <MapContainer className={styles.map} center={defaultCenter} zoom={10}>
         <TileLayer
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
