@@ -1,6 +1,9 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import * as trpc from '@trpc/server';
 import * as trpcNext from '@trpc/server/adapters/next';
+import { NodeHTTPCreateContextFnOptions } from '@trpc/server/adapters/node-http';
+import { IncomingMessage } from 'http';
+import ws from 'ws';
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface CreateContextOptions {
@@ -22,7 +25,9 @@ export type Context = trpc.inferAsyncReturnType<typeof createContextInner>;
  * @link https://trpc.io/docs/context
  */
 export async function createContext(
-  opts: trpcNext.CreateNextContextOptions,
+  opts:
+    | trpcNext.CreateNextContextOptions
+    | NodeHTTPCreateContextFnOptions<IncomingMessage, ws>,
 ): Promise<Context> {
   // for API-response caching see https://trpc.io/docs/caching
 
