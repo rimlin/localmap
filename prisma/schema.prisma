@@ -12,11 +12,21 @@ generator client {
 }
 
 model Marker {
-  id        String                               @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  createdAt DateTime                             @default(now())
-  coords    Unsupported("geometry(Point, 4326)")
+  id            String                               @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  createdAt     DateTime                             @default(now())
+  coords        Unsupported("geometry(Point, 4326)")
+  markerGroup   MarkerGroup                          @relation(fields: [markerGroupId], references: [id])
+  markerGroupId String                               @map("marker_group_id")
 
   // the index for that column
   @@index([coords], name: "location_idx", type: Gist)
   @@map("marker")
+}
+
+model MarkerGroup {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  name      String
+
+  markers Marker[]
 }

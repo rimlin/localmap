@@ -1,4 +1,5 @@
 import { LatLng } from 'leaflet';
+import { useRouter } from 'next/router';
 import React, { useEffect, useRef, useState } from 'react';
 import {
   MapContainer,
@@ -7,17 +8,19 @@ import {
   Popup,
   useMapEvents,
 } from 'react-leaflet';
+import { useQueryParams } from '~/features/router';
 import { RouterInput, trpc } from '~/utils/trpc';
 import { restoreLocationService } from '../../services';
 import styles from './Map.module.css';
 // import 'leaflet/dist/leaflet.css';
 
 type HandlersProps = {
+  groupId: string | undefined;
   onChangeBounds: (southWest: LatLng, northEast: LatLng) => void;
 };
 
 const Handlers = (props: HandlersProps) => {
-  const { onChangeBounds } = props;
+  const { groupId, onChangeBounds } = props;
 
   const utils = trpc.useContext();
 
@@ -30,8 +33,11 @@ const Handlers = (props: HandlersProps) => {
   const map = useMapEvents({
     click: (event) => {
       addMarker.mutate({
-        lat: event.latlng.lat,
-        lng: event.latlng.lng,
+        coords: {
+          lat: event.latlng.lat,
+          lng: event.latlng.lng,
+        },
+        groupId: groupId as string,
       });
     },
     moveend: (event) => {
@@ -59,16 +65,21 @@ const Handlers = (props: HandlersProps) => {
 };
 
 const Map: React.FC = (props) => {
+  const { group } = useQueryParams<{ group: string }>();
+
   const [bounds, setBounds] = useState<
-    RouterInput['marker']['list'] | undefined
+    RouterInput['marker']['list']['bounds'] | undefined
   >(undefined);
 
   const defaultCenter = useRef(restoreLocationService.get()).current;
 
   const markersQuery = trpc.marker.list.useQuery(
-    bounds as RouterInput['marker']['list'],
     {
-      enabled: bounds !== undefined,
+      bounds: bounds as RouterInput['marker']['list']['bounds'],
+      groupId: group as string,
+    },
+    {
+      enabled: bounds !== undefined && typeof group === 'string',
     },
   );
 
@@ -87,12 +98,12 @@ const Map: React.FC = (props) => {
         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
       />
-      {markersQuery.data?.result?.map((marker) => (
+      {markersQuery.data?.map((marker) => (
         <Marker key={marker.id} position={[marker.lat, marker.long]}>
           <Popup>{marker.id}</Popup>
         </Marker>
       ))}
-      <Handlers onChangeBounds={updateMarkers} />
+      <Handlers groupId={group} onChangeBounds={updateMarkers} />
     </MapContainer>
   );
 };

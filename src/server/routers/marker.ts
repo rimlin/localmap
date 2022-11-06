@@ -16,10 +16,13 @@ export const markerRouter = router({
   list: publicProcedure
     .input(
       z.object({
-        southWestLng: z.number(),
-        southWestLat: z.number(),
-        northEastLng: z.number(),
-        northEastLat: z.number(),
+        groupId: z.string(),
+        bounds: z.object({
+          southWestLng: z.number(),
+          southWestLat: z.number(),
+          northEastLng: z.number(),
+          northEastLat: z.number(),
+        }),
       }),
     )
     .query(async ({ input }) => {
@@ -33,27 +36,28 @@ export const markerRouter = router({
         Marker[]
       >`SELECT id, ST_X(ST_TRANSFORM(coords,4326)) AS LONG, ST_Y(ST_TRANSFORM(coords,4326)) AS LAT
        FROM marker WHERE  ST_Intersects
-       (coords, ST_MakeEnvelope ( ${input.southWestLng}::DECIMAL
-                         , ${input.southWestLat}::DECIMAL
-                         , ${input.northEastLng}::DECIMAL
-                         , ${input.northEastLat}::DECIMAL
+       (coords, ST_MakeEnvelope ( ${input.bounds.southWestLng}::DECIMAL
+                         , ${input.bounds.southWestLat}::DECIMAL
+                         , ${input.bounds.northEastLng}::DECIMAL
+                         , ${input.bounds.northEastLat}::DECIMAL
                          , 4326
-                         )::geography('POLYGON')
-       )`;
+                         )::geography('POLYGON')) AND marker_group_id=${input.groupId}
+       `;
 
-      return {
-        result,
-      };
+      return result;
     }),
   add: publicProcedure
     .input(
       z.object({
-        lat: z.number(),
-        lng: z.number(),
+        groupId: z.string(),
+        coords: z.object({
+          lat: z.number(),
+          lng: z.number(),
+        }),
       }),
     )
     .mutation(async ({ input }) => {
-      await prisma.$executeRaw`INSERT INTO marker(coords) VALUES(ST_SetSRID(ST_MakePoint(${input.lng}, ${input.lat}), 4326))`;
+      await prisma.$executeRaw`INSERT INTO marker(marker_group_id, coords) VALUES(${input.groupId}, ST_SetSRID(ST_MakePoint(${input.coords.lng}, ${input.coords.lat}), 4326))`;
 
       return true;
     }),
