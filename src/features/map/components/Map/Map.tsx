@@ -1,5 +1,6 @@
+import { useStore } from '@nanostores/react';
+import classNames from 'classnames';
 import { LatLng } from 'leaflet';
-import { useRouter } from 'next/router';
 import React, { useEffect, useRef, useState } from 'react';
 import {
   MapContainer,
@@ -8,9 +9,10 @@ import {
   Popup,
   useMapEvents,
 } from 'react-leaflet';
-import { useQueryParams } from '~/features/router';
+import { GroupQueryParams, useQueryParams } from '~/features/router';
 import { RouterInput, trpc } from '~/utils/trpc';
 import { restoreLocationService } from '../../services';
+import { mapStateStore } from '../../stores';
 import styles from './Map.module.css';
 // import 'leaflet/dist/leaflet.css';
 
@@ -21,6 +23,7 @@ type HandlersProps = {
 
 const Handlers = (props: HandlersProps) => {
   const { groupId, onChangeBounds } = props;
+  const mapState = useStore(mapStateStore);
 
   const utils = trpc.useContext();
 
@@ -32,13 +35,15 @@ const Handlers = (props: HandlersProps) => {
 
   const map = useMapEvents({
     click: (event) => {
-      addMarker.mutate({
-        coords: {
-          lat: event.latlng.lat,
-          lng: event.latlng.lng,
-        },
-        groupId: groupId as string,
-      });
+      if (groupId && mapState === 'insertMarker') {
+        addMarker.mutate({
+          coords: {
+            lat: event.latlng.lat,
+            lng: event.latlng.lng,
+          },
+          groupId: groupId as string,
+        });
+      }
     },
     moveend: (event) => {
       restoreLocationService.save(map.getCenter());
@@ -65,7 +70,8 @@ const Handlers = (props: HandlersProps) => {
 };
 
 const Map: React.FC = (props) => {
-  const { group } = useQueryParams<{ group: string }>();
+  const { group } = useQueryParams<GroupQueryParams>();
+  const mapState = useStore(mapStateStore);
 
   const [bounds, setBounds] = useState<
     RouterInput['marker']['list']['bounds'] | undefined
@@ -93,18 +99,28 @@ const Map: React.FC = (props) => {
   };
 
   return (
-    <MapContainer className={styles.map} center={defaultCenter} zoom={10}>
-      <TileLayer
-        attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-      />
-      {markersQuery.data?.map((marker) => (
-        <Marker key={marker.id} position={[marker.lat, marker.long]}>
-          <Popup>{marker.id}</Popup>
-        </Marker>
-      ))}
-      <Handlers groupId={group} onChangeBounds={updateMarkers} />
-    </MapContainer>
+    <div
+      className={classNames({
+        [styles.insertMarker]: mapState === 'insertMarker',
+      })}
+    >
+      <MapContainer
+        className={classNames(styles.map)}
+        center={defaultCenter}
+        zoom={10}
+      >
+        <TileLayer
+          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+        />
+        {markersQuery.data?.map((marker) => (
+          <Marker key={marker.id} position={[marker.lat, marker.long]}>
+            <Popup>{marker.id}</Popup>
+          </Marker>
+        ))}
+        <Handlers groupId={group} onChangeBounds={updateMarkers} />
+      </MapContainer>
+    </div>
   );
 };
 

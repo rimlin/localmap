@@ -1,11 +1,16 @@
+import { useStore } from '@nanostores/react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import React from 'react';
+import React, { useEffect } from 'react';
+import { mapStateStore } from '~/features/map';
+import { GroupQueryParams, useQueryParams } from '~/features/router';
 import { trpc } from '~/utils/trpc';
 import styles from './Sidebar.module.css';
 
 export const Sidebar: React.FC = (props) => {
   const router = useRouter();
+  const mapState = useStore(mapStateStore);
+  const { group } = useQueryParams<GroupQueryParams>();
 
   const utils = trpc.useContext();
   const markerGroupsQuery = trpc.markerGroup.list.useQuery();
@@ -30,12 +35,27 @@ export const Sidebar: React.FC = (props) => {
     });
   };
 
+  useEffect(() => {
+    mapStateStore.set('idle');
+  }, [router.asPath]);
+
   return (
     <div className={styles.root}>
       <h2>
         <Link href="/">LocalMap</Link>
       </h2>
       <button onClick={handleCreateMarkerGroup}>Создать коллекцию</button>
+
+      {group !== undefined &&
+        (mapState === 'idle' ? (
+          <button onClick={() => mapStateStore.set('insertMarker')}>
+            Вставить маркер
+          </button>
+        ) : (
+          <button onClick={() => mapStateStore.set('idle')}>
+            Отменить вставку
+          </button>
+        ))}
 
       <h3>Список коллекций</h3>
 
