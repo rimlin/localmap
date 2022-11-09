@@ -4,6 +4,7 @@ import { useRouter } from 'next/router';
 import React, { useEffect } from 'react';
 import { mapStateStore } from '~/features/map';
 import { GroupQueryParams, useQueryParams } from '~/features/router';
+import { Button } from '~/ui-kit';
 import { trpc } from '~/utils/trpc';
 import styles from './Sidebar.module.css';
 
@@ -48,16 +49,20 @@ export const Sidebar: React.FC = (props) => {
 
       {group !== undefined &&
         (mapState === 'idle' ? (
-          <button onClick={() => mapStateStore.set('insertMarker')}>
+          <Button onClick={() => mapStateStore.set('insertMarker')}>
             Вставить маркер
-          </button>
+          </Button>
         ) : (
           <button onClick={() => mapStateStore.set('idle')}>
             Отменить вставку
           </button>
         ))}
 
-      <h3>Список коллекций</h3>
+      <Button as={Link} href={'/'}>
+        Главная
+      </Button>
+
+      {/* <h3>Список коллекций</h3>
 
       <ul>
         {markerGroupsQuery.data?.map((markerGroup) => (
@@ -74,7 +79,7 @@ export const Sidebar: React.FC = (props) => {
             </Link>
           </li>
         ))}
-      </ul>
+      </ul> */}
     </div>
   );
 };

@@ -1,7 +1,7 @@
 import React from 'react';
 import Head from 'next/head';
 import { Sidebar } from '~/features/sidebar';
-import styles from './DefaultLayout.module.css';
+import styles from './DefaultLayout.module.scss';
 
 export const DefaultLayout = ({ children }: { children: React.ReactNode }) => {
   return (
