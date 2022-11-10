@@ -1,19 +1,40 @@
-import { NextPageWithLayout } from './_app';
+import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
 import { Map } from '~/features/map';
+import { MobileDetectionContext } from '~/infrastructure/mobileDetection';
+import { DefaultLayout } from '~/features/layout';
 
-const IndexPage: NextPageWithLayout = () => {
-  // prefetch all posts for instant navigation
-  // useEffect(() => {
-  //   const allPosts = postsQuery.data?.pages.flatMap((page) => page.items) ?? [];
-  //   for (const { id } of allPosts) {
-  //     void utils.post.byId.prefetch({ id });
-  //   }
-  // }, [postsQuery.data, utils]);
+type ServerSideProps = {
+  isMobile: boolean;
+};
+
+export const getServerSideProps: GetServerSideProps<ServerSideProps> = async ({
+  req,
+}) => {
+  const UA = req.headers['user-agent'];
+  const isMobile = Boolean(
+    UA?.match(
+      /Android|BlackBerry|iPhone|iPad|iPod|Opera Mini|IEMobile|WPDesktop/i,
+    ),
+  );
+
+  return {
+    props: {
+      isMobile,
+    },
+  };
+};
+
+const IndexPage = (
+  props: InferGetServerSidePropsType<typeof getServerSideProps>,
+) => {
+  const { isMobile } = props;
 
   return (
-    <>
-      <Map />
-    </>
+    <MobileDetectionContext.Provider value={{ isMobile }}>
+      <DefaultLayout>
+        <Map />
+      </DefaultLayout>
+    </MobileDetectionContext.Provider>
   );
 };
 

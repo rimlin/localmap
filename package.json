@@ -49,6 +49,7 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-leaflet": "^4.1.0",
+    "react-spring-bottom-sheet": "^3.4.1",
     "superjson": "^1.7.4",
     "ws": "^8.10.0",
     "zod": "^3.0.0"

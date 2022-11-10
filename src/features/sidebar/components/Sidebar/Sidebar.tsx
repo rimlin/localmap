@@ -42,7 +42,9 @@ export const Sidebar: React.FC = (props) => {
 
   return (
     <div className={styles.root}>
-      <h2>
+      <button onClick={handleCreateMarkerGroup}>+</button>
+
+      {/* <h2>
         <Link href="/">LocalMap</Link>
       </h2>
       <button onClick={handleCreateMarkerGroup}>Создать коллекцию</button>
@@ -60,7 +62,7 @@ export const Sidebar: React.FC = (props) => {
 
       <Button as={Link} href={'/'}>
         Главная
-      </Button>
+      </Button>*/}
 
       {/* <h3>Список коллекций</h3>
 
