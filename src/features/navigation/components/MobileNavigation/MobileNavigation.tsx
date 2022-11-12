@@ -1,5 +1,8 @@
 import { useRef } from 'react';
-import { BottomSheet, BottomSheetRef } from 'react-spring-bottom-sheet';
+import {
+  BottomSheet,
+  BottomSheetRef,
+} from '~/ui-library/components/BottomSheet';
 import styles from './MobileNavigation.module.scss';
 
 export const MobileNavigation = () => {
@@ -12,14 +15,14 @@ export const MobileNavigation = () => {
       blocking={false}
       expandOnContentDrag
       onDismiss={() => {
-        console.log(1);
         sheetRef.current?.snapTo(() => {
           return 100;
         });
       }}
-      snapPoints={() => [100, window.innerHeight - 200]}
+      snapPoints={() => [80, window.innerHeight - 200]}
       ref={sheetRef}
     >
+      <BottomSheet.Header>Места</BottomSheet.Header>
       <button
         onClick={() => {
           // Full typing for the arguments available in snapTo, yay!!

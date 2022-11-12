@@ -1,0 +1,32 @@
+@import '~/ui-library/app';
+
+.font-h1 {
+  @include font-h1();
+}
+.font-h2-regular-24 {
+  @include font-h2-regular-24();
+}
+.font-h2-medium-24 {
+  @include font-h2-medium-24();
+}
+.font-h3 {
+  @include font-h3();
+}
+.font-text-medium-18 {
+  @include font-text-medium-18();
+}
+.font-text-semibold-16 {
+  @include font-h1();
+}
+.font-text-regular-16 {
+  @include font-h1();
+}
+.font-text-italic-16 {
+  @include font-h1();
+}
+.font-text-italic-14 {
+  @include font-h1();
+}
+.font-text-regular-14 {
+  @include font-h1();
+}

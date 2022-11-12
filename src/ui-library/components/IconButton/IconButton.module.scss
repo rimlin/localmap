@@ -1,0 +1,77 @@
+@import '~/ui-library/app';
+
+.button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  border-radius: 4px;
+  transition: $transition;
+
+  &:disabled {
+    color: $c-6;
+  }
+
+  &:not(&:disabled) {
+    cursor: pointer;
+  }
+}
+
+.small {
+  padding: 2px;
+  border-radius: 1px;
+
+  svg {
+    width: 20px;
+    height: 20px;
+  }
+}
+
+.normal {
+  padding: spacing(1);
+  font-size: 24px;
+}
+
+.large {
+  padding: 16px;
+}
+
+.main {
+  color: $c-1;
+  background-color: $c-9;
+
+  &:disabled {
+    background-color: $c-10;
+  }
+
+  &:hover:not(&:disabled) {
+    background-color: $c-8;
+  }
+}
+
+.secondary {
+  color: $c-9;
+  background-color: $c-1;
+  border: 1px solid $c-9;
+
+  &:disabled {
+    color: $c-10;
+    border-color: $c-10;
+  }
+
+  &:hover:not(&:disabled) {
+    color: $c-8;
+    background-color: $c-12;
+    border-color: $c-8;
+  }
+}
+
+.transparent {
+  color: $c-10;
+  background-color: transparent;
+  border: none;
+
+  &:hover {
+    color: $c-6;
+  }
+}

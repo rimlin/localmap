@@ -1,7 +1,6 @@
 // @ts-check
 /* eslint-disable @typescript-eslint/no-var-requires */
 const { env } = require('./src/server/env');
-const path = require('path');
 
 /**
  * Don't be scared of the generics here.
@@ -27,8 +26,8 @@ module.exports = getConfig({
   publicRuntimeConfig: {
     NODE_ENV: env.NODE_ENV,
   },
-  sassOptions: {
-    includePaths: [path.join(__dirname, 'styles')],
-    prependData: `@import "~/styles/imports.scss";`,
-  },
+  // sassOptions: {
+  //   includePaths: [path.join(__dirname, 'styles')],
+  //   prependData: `@import "~/styles/imports.scss";`,
+  // },
 });

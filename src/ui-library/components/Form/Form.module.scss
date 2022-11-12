@@ -1,0 +1,10 @@
+@import '~/ui-library/app';
+
+.root {
+  [data-form='row'] + [data-form='row'] {
+    margin-top: spacing(1.5);
+  }
+  [data-form='col'] + [data-form='col'] {
+    margin-left: spacing(3);
+  }
+}

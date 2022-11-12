@@ -1,0 +1,17 @@
+@function spacing($t: 1, $r: null, $b: null, $l: null) {
+    $result: 0;
+
+    @if $t and $r and $b and $l {
+        $result: $spacing * $t $spacing * $r $spacing * $b $spacing * $l;
+    } @else if $t and $r and $b and not $l {
+        $result: $spacing * $t $spacing * $r $spacing * $b;
+    } @else if $t and $r and not $b and not $l {
+        $result: $spacing * $t $spacing * $r;
+    } @else if $t and not $r and not $b and not $l {
+        $result: $spacing * $t;
+    } @else {
+        @error "m(#{$t}, #{$r}, #{$b}, #{$l}): Invalid parameters. Expects m($size), m($y, $x), m($t, $x, $b) or m($t, $r, $b, $l)"
+    }
+      
+    @return $result;
+} 

@@ -1,0 +1,9 @@
+@import '~/ui-library/app';
+
+.root {
+  padding: spacing(2, 4);
+
+  @include s {
+    padding: spacing(3, 6);
+  }
+}

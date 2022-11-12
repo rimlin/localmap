@@ -1,0 +1,13 @@
+@import '~/ui-library/app';
+
+.root {
+  display: flex;
+  gap: spacing(2);
+  align-items: center;
+  justify-content: flex-end;
+  padding: spacing(2, 4);
+
+  @include s {
+    padding: spacing(3, 6);
+  }
+}

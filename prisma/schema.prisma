@@ -11,22 +11,23 @@ generator client {
   provider = "prisma-client-js"
 }
 
-model Marker {
+model Place {
   id            String                               @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   createdAt     DateTime                             @default(now())
-  coords        Unsupported("geometry(Point, 4326)")
-  markerGroup   MarkerGroup                          @relation(fields: [markerGroupId], references: [id])
-  markerGroupId String                               @map("marker_group_id")
+  location      Unsupported("geometry(Point, 4326)")
+  PlacesGroup   PlacesGroup?                         @relation(fields: [placesGroupId], references: [id])
+  placesGroupId String?                              @map("places_group_id")
+  name          String
+  description   String?
 
-  // the index for that column
-  @@index([coords], name: "location_idx", type: Gist)
-  @@map("marker")
+  @@index([location], name: "location_idx", type: Gist)
+  @@map("place")
 }
 
-model MarkerGroup {
+model PlacesGroup {
   id        String   @id @default(cuid())
   createdAt DateTime @default(now())
   name      String
 
-  markers Marker[]
+  places Place[]
 }

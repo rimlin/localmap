@@ -1,0 +1,99 @@
+$c-font-h1: $c-5;
+
+@mixin font-h1($color: $c-font-h1) {
+  color: $color;
+  font-weight: 400;
+  font-size: 32px;
+  font-family: Roboto, sans-serif;
+  line-height: 1.31;
+}
+
+$c-h2-regular-24: $c-5;
+
+@mixin font-h2-regular-24($color: $c-h2-regular-24) {
+  color: $color;
+  font-weight: 400;
+  font-size: 24px;
+  font-family: Roboto, sans-serif;
+  line-height: 1.33;
+}
+
+$c-h2-medium-24: $c-5;
+
+@mixin font-h2-medium-24($color: $c-h2-medium-24) {
+  color: $color;
+  font-weight: 500;
+  font-size: 24px;
+  font-family: Roboto, sans-serif;
+  line-height: 1.33;
+}
+
+$c-font-h3: $c-5;
+
+@mixin font-h3($color: $c-font-h3) {
+  color: $color;
+  font-weight: 500;
+  font-size: 18px;
+  font-family: Roboto, sans-serif;
+  line-height: 1.33;
+}
+
+$c-font-text-medium-18: $c-5;
+
+@mixin font-text-medium-18($color: $c-font-text-medium-18) {
+  color: $color;
+  font-weight: 400;
+  font-size: 18px;
+  font-family: Roboto, sans-serif;
+  line-height: 1.44;
+}
+
+$c-font-text-semibold-16: $c-5;
+
+@mixin font-text-semibold-16($color: $c-font-text-semibold-16) {
+  color: $color;
+  font-weight: 600;
+  font-size: 16px;
+  font-family: Roboto, sans-serif;
+  line-height: 1.5;
+}
+
+$c-font-text-regular-16: $c-5;
+
+@mixin font-text-regular-16($color: $c-font-text-regular-16) {
+  color: $color;
+  font-weight: 400;
+  font-size: 16px;
+  font-family: Roboto, sans-serif;
+  line-height: 1.38;
+}
+
+$c-font-text-italic-16: $c-5;
+
+@mixin font-text-italic-16($color: $c-font-text-italic-16) {
+  color: $color;
+  font-weight: 400;
+  font-size: 16px;
+  font-family: Roboto, sans-serif;
+  line-height: 1.5;
+}
+
+$c-font-text-italic-14: $c-5;
+
+@mixin font-text-italic-14($color: $c-font-text-italic-14) {
+  color: $color;
+  font-weight: 400;
+  font-size: 14px;
+  font-family: Roboto, sans-serif;
+  line-height: 1.43;
+}
+
+$c-font-text-regular-14: $c-5;
+
+@mixin font-text-regular-14($color: $c-font-text-regular-14) {
+  color: $color;
+  font-weight: 400;
+  font-size: 14px;
+  font-family: Roboto, sans-serif;
+  line-height: 1.43;
+}

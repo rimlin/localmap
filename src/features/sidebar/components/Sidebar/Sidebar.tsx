@@ -1,37 +1,32 @@
-import { useStore } from '@nanostores/react';
-import Link from 'next/link';
+import { PlacesGroup } from '@prisma/client';
 import { useRouter } from 'next/router';
 import React, { useEffect } from 'react';
 import { mapStateStore } from '~/features/map';
-import { GroupQueryParams, useQueryParams } from '~/features/router';
-import { Button } from '~/ui-kit';
-import { trpc } from '~/utils/trpc';
-import styles from './Sidebar.module.css';
+import { useModalState } from '~/features/modal';
+import { CreatePlacesGroup } from '~/features/placesGroup';
+import styles from './Sidebar.module.scss';
 
-export const Sidebar: React.FC = (props) => {
+export const Sidebar: React.FC = () => {
   const router = useRouter();
-  const mapState = useStore(mapStateStore);
-  const { group } = useQueryParams<GroupQueryParams>();
+  // const mapState = useStore(mapStateStore);
+  // const { group } = useQueryParams<GroupQueryParams>();
 
-  const utils = trpc.useContext();
-  const markerGroupsQuery = trpc.markerGroup.list.useQuery();
-  const addMarkerGroup = trpc.markerGroup.add.useMutation({
-    async onSuccess() {
-      await utils.markerGroup.list.invalidate();
-    },
-  });
+  // const utils = trpc.useContext();
+  // const markerGroupsQuery = trpc.markerGroup.list.useQuery();
+  // const addMarkerGroup = trpc.markerGroup.add.useMutation({
+  //   async onSuccess() {
+  //     await utils.markerGroup.list.invalidate();
+  //   },
+  // });
 
-  const handleCreateMarkerGroup = async () => {
-    const name = prompt('Название коллекции') || 'Название по умолчанию';
+  const createPlacesGroupState = useModalState();
 
-    const markerGroup = await addMarkerGroup.mutateAsync({
-      name,
-    });
-
+  const onCreatedPlacesGroup = (dto: PlacesGroup) => {
+    createPlacesGroupState.close();
     router.push({
       pathname: '/',
       query: {
-        group: markerGroup.id,
+        group: dto.id,
       },
     });
   };
@@ -42,7 +37,14 @@ export const Sidebar: React.FC = (props) => {
 
   return (
     <div className={styles.root}>
-      <button onClick={handleCreateMarkerGroup}>+</button>
+      <button onClick={createPlacesGroupState.open}>+</button>
+
+      {createPlacesGroupState.isOpen && (
+        <CreatePlacesGroup
+          onCreated={onCreatedPlacesGroup}
+          onCancel={createPlacesGroupState.close}
+        />
+      )}
 
       {/* <h2>
         <Link href="/">LocalMap</Link>

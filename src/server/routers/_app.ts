@@ -2,14 +2,14 @@
  * This file contains the root router of your tRPC-backend
  */
 import { publicProcedure, router } from '../trpc';
-import { markerRouter } from './marker';
-import { markerGroupRouter } from './markerGroup';
+import { placeRouter } from './place';
+import { placesGroupRouter } from './placesGroup';
 
 export const appRouter = router({
   healthcheck: publicProcedure.query(() => 'yay!'),
 
-  marker: markerRouter,
-  markerGroup: markerGroupRouter,
+  place: placeRouter,
+  placesGroup: placesGroupRouter,
 });
 
 export type AppRouter = typeof appRouter;

@@ -1,0 +1,12 @@
+@import '~/ui-library/app';
+
+.root {
+  @include font-h2-medium-24($c-5);
+
+  margin: 0;
+  padding: spacing(3, 4, 0);
+
+  @include s {
+    padding: spacing(3, 6, 3);
+  }
+}

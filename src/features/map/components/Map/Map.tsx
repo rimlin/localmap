@@ -9,7 +9,8 @@ import {
   Popup,
   useMapEvents,
 } from 'react-leaflet';
-import { GroupQueryParams, useQueryParams } from '~/features/router';
+import { usePlaces } from '~/features/place';
+import { usePlacesGroupId } from '~/features/placesGroup';
 import { RouterInput, trpc } from '~/utils/trpc';
 import { restoreLocationService } from '../../services';
 import { mapStateStore } from '../../stores';
@@ -17,35 +18,36 @@ import styles from './Map.module.css';
 // import 'leaflet/dist/leaflet.css';
 
 type HandlersProps = {
-  groupId: string | undefined;
   onChangeBounds: (southWest: LatLng, northEast: LatLng) => void;
 };
 
 const Handlers = (props: HandlersProps) => {
-  const { groupId, onChangeBounds } = props;
+  const placesGroupId = usePlacesGroupId();
+  const { onChangeBounds } = props;
   const mapState = useStore(mapStateStore);
 
   const utils = trpc.useContext();
 
-  const addMarker = trpc.marker.add.useMutation({
+  const addPlace = trpc.place.add.useMutation({
     async onSuccess() {
-      await utils.marker.list.invalidate();
+      await utils.place.list.invalidate();
     },
   });
 
   const map = useMapEvents({
     click: (event) => {
-      if (groupId && mapState === 'insertMarker') {
-        addMarker.mutate({
-          coords: {
+      if (placesGroupId && mapState === 'insertMarker') {
+        addPlace.mutate({
+          location: {
             lat: event.latlng.lat,
             lng: event.latlng.lng,
           },
-          groupId: groupId as string,
+          placeGroupId: placesGroupId,
+          name: 'place name',
         });
       }
     },
-    moveend: (event) => {
+    moveend: () => {
       restoreLocationService.save(map.getCenter());
       onChangeBounds(
         map.getBounds().getSouthWest(),
@@ -64,30 +66,22 @@ const Handlers = (props: HandlersProps) => {
       map.getBounds().getSouthWest(),
       map.getBounds().getNorthEast(),
     );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return null;
 };
 
-const Map: React.FC = (props) => {
-  const { group } = useQueryParams<GroupQueryParams>();
+const Map: React.FC = () => {
   const mapState = useStore(mapStateStore);
 
   const [bounds, setBounds] = useState<
-    RouterInput['marker']['list']['bounds'] | undefined
+    RouterInput['place']['list']['bounds'] | undefined
   >(undefined);
 
   const defaultCenter = useRef(restoreLocationService.get()).current;
 
-  const markersQuery = trpc.marker.list.useQuery(
-    {
-      bounds: bounds as RouterInput['marker']['list']['bounds'],
-      groupId: group as string,
-    },
-    {
-      enabled: bounds !== undefined && typeof group === 'string',
-    },
-  );
+  const { data } = usePlaces({ bounds });
 
   const updateMarkers = async (southWest: LatLng, northEast: LatLng) => {
     setBounds({
@@ -109,12 +103,12 @@ const Map: React.FC = (props) => {
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
-        {markersQuery.data?.map((marker) => (
+        {data?.map((marker) => (
           <Marker key={marker.id} position={[marker.lat, marker.long]}>
             <Popup>{marker.id}</Popup>
           </Marker>
         ))}
-        <Handlers groupId={group} onChangeBounds={updateMarkers} />
+        <Handlers onChangeBounds={updateMarkers} />
       </MapContainer>
     </div>
   );

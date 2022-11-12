@@ -1,0 +1,43 @@
+@mixin size($w, $h: false) {
+  @if $h {
+    width: $w;
+    height: $h;
+  } @else {
+    width: $w;
+    height: $w;
+  }
+}
+
+@mixin a11y-hide {
+  @include size(1px);
+
+  position: absolute;
+  overflow: hidden;
+  clip: rect(1px, 1px, 1px, 1px);
+}
+
+@mixin line-clamp($linesCount) {
+  /* stylelint-disable-next-line value-no-vendor-prefix */
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: $linesCount;
+  overflow: hidden;
+}
+
+@mixin text-ellipsis() {
+  display: inline-block;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+@mixin clear-button() {
+  padding: 0;
+  color: inherit;
+  font: inherit;
+  background: none;
+  border: none;
+  outline: inherit;
+  cursor: pointer;
+  appearance: none;
+}

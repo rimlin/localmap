@@ -1,0 +1,48 @@
+$breakpoint-xs: 320px;
+$breakpoint-s: 768px;
+$breakpoint-m: 1024px;
+$breakpoint-l: 1440px;
+$breakpoint-xl: 1920px;
+
+@mixin xs {
+  @include breakpoint($breakpoint-xs) {
+    @content;
+  }
+}
+
+@mixin s {
+  @include breakpoint($breakpoint-s) {
+    @content;
+  }
+}
+
+@mixin to-s {
+  @include breakpoint-to($breakpoint-s) {
+    @content;
+  }
+}
+
+@mixin m {
+  @include breakpoint($breakpoint-m) {
+    @content;
+  }
+}
+
+@mixin l {
+  @include breakpoint($breakpoint-l) {
+    @content;
+  }
+}
+
+
+@mixin breakpoint($width) {
+  @media screen and (min-width: $width) {
+    @content;
+  }
+}
+
+@mixin breakpoint-to($width) {
+  @media screen and (max-width: ($width - 1)) {
+    @content;
+  }
+}

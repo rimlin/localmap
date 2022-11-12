@@ -1,0 +1,7 @@
+@import '~/ui-library/app';
+
+.root {
+  position: fixed;
+  inset: 0;
+  z-index: $zIndex-modal;
+}

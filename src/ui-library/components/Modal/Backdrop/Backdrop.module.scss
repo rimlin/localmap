@@ -1,0 +1,12 @@
+@import '~/ui-library/app';
+
+.root {
+  position: fixed;
+  z-index: -1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: $backdrop;
+  inset: 0;
+  -webkit-tap-highlight-color: transparent;
+}

@@ -1,9 +1,11 @@
+@import '~/ui-library/app';
+
 .root {
   background-color: hsl(230, 30%, 25%);
   display: grid;
   grid-template-columns: 260px 1fr;
 
-  @include to(s) {
+  @include to-s {
     grid-template-columns: 1fr;
     grid-template-rows: 60px 1fr;
   }

@@ -1,0 +1,12 @@
+@import '~/ui-library/app';
+
+.root {
+  display: flex;
+  gap: spacing(2);
+  flex-direction: column;
+
+  @include s {
+    flex-direction: row;
+    align-items: center;
+  }
+}

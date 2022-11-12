@@ -1,0 +1,59 @@
+@mixin grid-item-start($xs: '', $s: '', $m: '', $l: '', $xl: '') {
+  $breakpoint-to-column-amount: (
+    #{$breakpoint-xs}: $xs,
+    #{$breakpoint-s}: $s,
+    #{$breakpoint-m}: $m,
+    #{$breakpoint-l}: $l,
+    #{$breakpoint-xl}: $xl
+  );
+  @each $bp, $column-amount in $breakpoint-to-column-amount {
+    @if $column-amount != '' {
+      @if #{$breakpoint-xs} == #{$bp} {
+        grid-column-start: $column-amount;
+      } @else {
+        @include breakpoint($bp) {
+          grid-column-start: $column-amount;
+        }
+      }
+    }
+  }
+}
+
+@mixin grid-item-end($xs: '', $s: '', $m: '', $l: '', $xl: '') {
+  $breakpoint-to-column-amount: (
+    #{$breakpoint-xs}: $xs,
+    #{$breakpoint-s}: $s,
+    #{$breakpoint-m}: $m,
+    #{$breakpoint-l}: $l,
+    #{$breakpoint-xl}: $xl
+  );
+  @each $bp, $column-amount in $breakpoint-to-column-amount {
+    @if $column-amount != '' {
+      @if #{$breakpoint-xs} == #{$bp} {
+        grid-column-end: $column-amount;
+      } @else {
+        @include breakpoint($bp) {
+          grid-column-end: $column-amount;
+        }
+      }
+    }
+  }
+}
+
+$grid-offset: 2;
+
+@mixin from-start {
+  grid-column-start: $grid-offset;
+}
+
+@mixin to-end {
+  grid-column-end: -$grid-offset;
+}
+
+@mixin from-start-to-end {
+  grid-column: #{$grid-offset}/-#{$grid-offset};
+}
+
+@mixin full-width {
+  grid-column: 1/-1;
+}
