@@ -3,6 +3,7 @@ import { PolymorphicComponentPropWithRef } from '../utils/types';
 
 export type ButtonPropsInner = {
   variant?: 'default';
+  fullWidth?: boolean;
 };
 
 export type ButtonProps<T extends ElementType = 'button'> =

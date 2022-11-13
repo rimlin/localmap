@@ -1,1 +1,2 @@
-export * from './groupQueryParams';
+export * from './placesGroupQueryParams';
+export * from './insertPlaceQueryParams';

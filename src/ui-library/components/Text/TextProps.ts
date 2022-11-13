@@ -10,6 +10,7 @@ type TypographyType =
   | 'text-regular-16'
   | 'text-italic-16'
   | 'text-italic-14'
+  | 'text-medium-14'
   | 'text-regular-14';
 
 type ColorType =

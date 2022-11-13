@@ -6,6 +6,7 @@
   left: 50%;
   display: flex;
   flex-direction: column;
+  width: 85vw;
   max-height: calc(100% - spacing(8));
   overflow-y: auto;
   color: $c-5;
@@ -13,7 +14,6 @@
   border-radius: 4px;
   outline: 0;
   transform: translate(-50%, -50%);
-  width: 85vw;
 
   @include s {
     width: 56vw;

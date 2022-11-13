@@ -1,7 +1,6 @@
 import { PlacesGroup } from '@prisma/client';
 import { useRouter } from 'next/router';
-import React, { useEffect } from 'react';
-import { mapStateStore } from '~/features/map';
+import React from 'react';
 import { useModalState } from '~/features/modal';
 import { CreatePlacesGroup } from '~/features/placesGroup';
 import styles from './Sidebar.module.scss';
@@ -31,13 +30,13 @@ export const Sidebar: React.FC = () => {
     });
   };
 
-  useEffect(() => {
-    mapStateStore.set('idle');
-  }, [router.asPath]);
+  // useEffect(() => {
+  //   mapStateStore.set('idle');
+  // }, [router.asPath]);
 
   return (
     <div className={styles.root}>
-      <button onClick={createPlacesGroupState.open}>+</button>
+      <button onClick={createPlacesGroupState.open}>Создать список</button>
 
       {createPlacesGroupState.isOpen && (
         <CreatePlacesGroup

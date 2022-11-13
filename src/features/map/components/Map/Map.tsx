@@ -8,10 +8,12 @@ import {
   Marker,
   Popup,
   useMapEvents,
+  CircleMarker,
 } from 'react-leaflet';
 import { usePlaces } from '~/features/place';
 import { usePlacesGroupId } from '~/features/placesGroup';
 import { RouterInput, trpc } from '~/utils/trpc';
+import { useMapActionsState } from '../../hooks';
 import { restoreLocationService } from '../../services';
 import { mapStateStore } from '../../stores';
 import styles from './Map.module.css';
@@ -24,7 +26,7 @@ type HandlersProps = {
 const Handlers = (props: HandlersProps) => {
   const placesGroupId = usePlacesGroupId();
   const { onChangeBounds } = props;
-  const mapState = useStore(mapStateStore);
+  const mapActionsState = useMapActionsState();
 
   const utils = trpc.useContext();
 
@@ -35,19 +37,11 @@ const Handlers = (props: HandlersProps) => {
   });
 
   const map = useMapEvents({
-    click: (event) => {
-      if (placesGroupId && mapState === 'insertMarker') {
-        addPlace.mutate({
-          location: {
-            lat: event.latlng.lat,
-            lng: event.latlng.lng,
-          },
-          placeGroupId: placesGroupId,
-          name: 'place name',
-        });
-      }
+    move: () => {
+      setCenter(map.getCenter());
     },
     moveend: () => {
+      mapStateStore.set({ center: map.getCenter() });
       restoreLocationService.save(map.getCenter());
       onChangeBounds(
         map.getBounds().getSouthWest(),
@@ -59,6 +53,8 @@ const Handlers = (props: HandlersProps) => {
     },
   });
 
+  const [center, setCenter] = useState(map.getCenter());
+
   useEffect(() => {
     map.locate();
 
@@ -69,12 +65,18 @@ const Handlers = (props: HandlersProps) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  return null;
+  if (mapActionsState.isInsertingPlace) {
+    return (
+      <CircleMarker
+        center={center}
+        pathOptions={{ color: 'red', fillOpacity: 1 }}
+        radius={10}
+      />
+    );
+  }
 };
 
 const Map: React.FC = () => {
-  const mapState = useStore(mapStateStore);
-
   const [bounds, setBounds] = useState<
     RouterInput['place']['list']['bounds'] | undefined
   >(undefined);
@@ -93,11 +95,7 @@ const Map: React.FC = () => {
   };
 
   return (
-    <div
-      className={classNames({
-        [styles.insertMarker as string]: mapState === 'insertMarker',
-      })}
-    >
+    <div>
       <MapContainer className={styles.map} center={defaultCenter} zoom={10}>
         <TileLayer
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'

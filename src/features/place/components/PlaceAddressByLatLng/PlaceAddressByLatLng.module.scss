@@ -1,0 +1,16 @@
+@import '~/ui-library/app';
+
+.root {
+  display: flex;
+  gap: spacing(1);
+  align-items: center;
+}
+
+.icon {
+  color: $c-10;
+}
+
+.address {
+  display: flex;
+  flex-direction: column;
+}

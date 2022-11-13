@@ -1,0 +1,30 @@
+@import '~/ui-library/app';
+
+.root {
+  position: fixed;
+  bottom: 0;
+  z-index: $z-index-bottom-sheet;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 200px;
+  background-color: $c-1;
+}
+
+.inner {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  padding: spacing(2, 4);
+}
+
+.placeAddress {
+  display: flex;
+  flex: 1;
+}
+
+.actions {
+  margin-top: auto;
+  padding: spacing(2, 4);
+  border-top: 1px solid $c-10;
+}

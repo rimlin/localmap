@@ -1,0 +1,1 @@
+export { PlaceAddressByLatLng } from './PlaceAddressByLatLng';

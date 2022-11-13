@@ -1,0 +1,28 @@
+{
+  "extends": [
+    "stylelint-config-standard-scss",
+    "stylelint-config-rational-order",
+    "stylelint-config-prettier"
+  ],
+  "rules": {
+    "selector-pseudo-class-no-unknown": [
+      true,
+      {
+        "ignorePseudoClasses": [
+          "global"
+        ]
+      }
+    ],
+    "selector-pseudo-element-colon-notation": "single",
+    "rule-empty-line-before": null,
+    "property-no-vendor-prefix": [
+      true,
+      {
+        "ignoreProperties": [
+          "text-size-adjust"
+        ]
+      }
+    ],
+    "selector-class-pattern": "^[a-z][a-zA-Z0-9-]+$"
+  }
+}

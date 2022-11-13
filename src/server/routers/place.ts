@@ -5,14 +5,7 @@
 import { router, publicProcedure } from '../trpc';
 import { z } from 'zod';
 import { prisma } from '~/server/prisma';
-
-type Place = {
-  id: string;
-  long: number;
-  lat: number;
-  name: string;
-  description: string;
-};
+import { createPlaceApiSchema, Place } from '~/features/place';
 
 export const placeRouter = router({
   list: publicProcedure
@@ -55,17 +48,7 @@ export const placeRouter = router({
       }
     }),
   add: publicProcedure
-    .input(
-      z.object({
-        placeGroupId: z.string(),
-        location: z.object({
-          lat: z.number(),
-          lng: z.number(),
-        }),
-        name: z.string(),
-        description: z.string().optional(),
-      }),
-    )
+    .input(createPlaceApiSchema)
     .mutation(async ({ input }) => {
       await prisma.$executeRaw`INSERT INTO place(places_group_id, location, name, description)
         VALUES(${input.placeGroupId}, ST_SetSRID(ST_MakePoint(${input.location.lng}, ${input.location.lat}), 4326), ${input.name}, ${input.description})`;

@@ -2,8 +2,8 @@
 
 .root {
   display: flex;
-  gap: spacing(2);
   flex-direction: column;
+  gap: spacing(2);
 
   @include s {
     flex-direction: row;

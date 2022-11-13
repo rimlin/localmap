@@ -4,22 +4,25 @@ type Props = {
   initialOpen?: boolean;
 };
 
-export const useModalState = (props: Props = {}) => {
+export const useModalState = <T>(props: Props = {}) => {
   const { initialOpen = false } = props;
+  const [data, setData] = useState<T>();
 
   const [isOpen, setIsOpen] = useState(initialOpen);
 
-  const open = () => {
+  const open = (value?: T) => {
+    setData(value);
     setIsOpen(true);
   };
 
   const close = () => {
     setIsOpen(false);
+    setData(undefined);
   };
 
   const toggle = () => {
     setIsOpen((prevState) => !prevState);
   };
 
-  return { open, close, isOpen, toggle };
+  return { data, open, close, isOpen, toggle };
 };

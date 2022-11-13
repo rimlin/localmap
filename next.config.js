@@ -1,3 +1,6 @@
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const StylelintPlugin = require('stylelint-webpack-plugin');
+
 // @ts-check
 /* eslint-disable @typescript-eslint/no-var-requires */
 const { env } = require('./src/server/env');
@@ -26,6 +29,11 @@ module.exports = getConfig({
   publicRuntimeConfig: {
     NODE_ENV: env.NODE_ENV,
   },
+  webpack: (config) => {
+    config.plugins.push(new StylelintPlugin());
+    return config;
+  },
+
   // sassOptions: {
   //   includePaths: [path.join(__dirname, 'styles')],
   //   prependData: `@import "~/styles/imports.scss";`,

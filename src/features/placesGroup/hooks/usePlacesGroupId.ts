@@ -1,7 +1,7 @@
-import { GroupQueryParams, useQueryParams } from '~/features/router';
+import { PlacesGroupQueryParams, useQueryParams } from '~/features/router';
 
 export const usePlacesGroupId = () => {
-  const { group } = useQueryParams<GroupQueryParams>();
+  const { group } = useQueryParams<PlacesGroupQueryParams>();
 
   return group;
 };
