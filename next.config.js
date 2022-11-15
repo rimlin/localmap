@@ -5,6 +5,9 @@ const StylelintPlugin = require('stylelint-webpack-plugin');
 /* eslint-disable @typescript-eslint/no-var-requires */
 const { env } = require('./src/server/env');
 
+/* eslint-disable @typescript-eslint/no-var-requires */
+const { i18n } = require('./next-i18next.config');
+
 /**
  * Don't be scared of the generics here.
  * All they do is to give us autocompletion when using this.
@@ -21,6 +24,7 @@ function getConfig(config) {
  * @link https://nextjs.org/docs/api-reference/next.config.js/introduction
  */
 module.exports = getConfig({
+  i18n,
   /**
    * Dynamic configuration available for the browser and server.
    * Note: requires `ssr: true` or a `getInitialProps` in `_app.tsx`

@@ -1,0 +1,1 @@
+export { initializeZodLocale } from './zodLocale';

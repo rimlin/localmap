@@ -1,0 +1,10 @@
+{
+  "actions": {
+    "add": "Добавить",
+    "edit": "Редактировать",
+    "remove": "Удалить"
+  },
+  "sidebar": {
+    "createPlacesList": "Создать список"
+  }
+}

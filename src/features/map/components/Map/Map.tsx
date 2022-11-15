@@ -1,5 +1,3 @@
-import { useStore } from '@nanostores/react';
-import classNames from 'classnames';
 import { LatLng } from 'leaflet';
 import React, { useEffect, useRef, useState } from 'react';
 import {
@@ -11,8 +9,7 @@ import {
   CircleMarker,
 } from 'react-leaflet';
 import { usePlaces } from '~/features/place';
-import { usePlacesGroupId } from '~/features/placesGroup';
-import { RouterInput, trpc } from '~/utils/trpc';
+import { RouterInput } from '~/utils/trpc';
 import { useMapActionsState } from '../../hooks';
 import { restoreLocationService } from '../../services';
 import { mapStateStore } from '../../stores';
@@ -24,17 +21,8 @@ type HandlersProps = {
 };
 
 const Handlers = (props: HandlersProps) => {
-  const placesGroupId = usePlacesGroupId();
   const { onChangeBounds } = props;
   const mapActionsState = useMapActionsState();
-
-  const utils = trpc.useContext();
-
-  const addPlace = trpc.place.add.useMutation({
-    async onSuccess() {
-      await utils.place.list.invalidate();
-    },
-  });
 
   const map = useMapEvents({
     move: () => {

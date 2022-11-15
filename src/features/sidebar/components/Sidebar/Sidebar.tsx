@@ -3,6 +3,7 @@ import { useRouter } from 'next/router';
 import React from 'react';
 import { useModalState } from '~/features/modal';
 import { CreatePlacesGroup } from '~/features/placesGroup';
+import { useTranslation } from '~/infrastructure/i18n';
 import styles from './Sidebar.module.scss';
 
 export const Sidebar: React.FC = () => {
@@ -18,6 +19,7 @@ export const Sidebar: React.FC = () => {
   //   },
   // });
 
+  const { t, i18n } = useTranslation();
   const createPlacesGroupState = useModalState();
 
   const onCreatedPlacesGroup = (dto: PlacesGroup) => {
@@ -30,13 +32,17 @@ export const Sidebar: React.FC = () => {
     });
   };
 
+  console.log(i18n.language);
+
   // useEffect(() => {
   //   mapStateStore.set('idle');
   // }, [router.asPath]);
 
   return (
     <div className={styles.root}>
-      <button onClick={createPlacesGroupState.open}>Создать список</button>
+      <button onClick={createPlacesGroupState.open}>
+        {t('sidebar.createPlacesList')}
+      </button>
 
       {createPlacesGroupState.isOpen && (
         <CreatePlacesGroup

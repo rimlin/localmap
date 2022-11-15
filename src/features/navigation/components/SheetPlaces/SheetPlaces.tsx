@@ -7,6 +7,8 @@ export const SheetPlaces = (props: SheetPlacesProps) => {
   const { onAdd } = props;
   const { data } = usePlaces({});
 
+  const handleClickPlace = () => {};
+
   return (
     <>
       <BottomSheet.Header>Места</BottomSheet.Header>
@@ -14,7 +16,7 @@ export const SheetPlaces = (props: SheetPlacesProps) => {
         <Button onClick={onAdd}>Добавить место</Button>
 
         {data?.map((item) => (
-          <PlaceCard key={item.id} info={item} onClick={() => {}} />
+          <PlaceCard key={item.id} info={item} onClick={handleClickPlace} />
         ))}
       </BottomSheet.Content>
     </>

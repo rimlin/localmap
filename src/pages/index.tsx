@@ -1,4 +1,5 @@
 import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { Map } from '~/features/map';
 import { MobileDetectionContext } from '~/infrastructure/mobileDetection';
 import { DefaultLayout } from '~/features/layout';
@@ -9,6 +10,7 @@ type ServerSideProps = {
 
 export const getServerSideProps: GetServerSideProps<ServerSideProps> = async ({
   req,
+  locale,
 }) => {
   const UA = req.headers['user-agent'];
   const isMobile = Boolean(
@@ -19,6 +21,7 @@ export const getServerSideProps: GetServerSideProps<ServerSideProps> = async ({
 
   return {
     props: {
+      ...(await serverSideTranslations(locale ?? 'ru', ['common', 'zod'])),
       isMobile,
     },
   };
